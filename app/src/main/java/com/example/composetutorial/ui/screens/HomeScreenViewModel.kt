@@ -3,7 +3,8 @@ package com.example.composetutorial.ui.screens
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composetutorial.dataSource.getData
+import com.example.composetutorial.Data.Repository
+import com.example.composetutorial.Data.Response
 import com.example.composetutorial.domain.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +13,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor() : ViewModel() {
+class HomeScreenViewModel @Inject constructor(val repository: Repository) : ViewModel() {
 
     val notesLiveData = MutableLiveData<List<Note>>(listOf())
 
@@ -22,7 +23,7 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
 
     fun refreshData() {
         viewModelScope.launch(Dispatchers.IO) {
-            notesLiveData.postValue(_getNotes())
+            _getNotes()
         }
     }
 
@@ -32,12 +33,32 @@ class HomeScreenViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    private suspend fun _getNotes(): List<Note> {
-        TODO("Not yet implemented")
-        return getData()
+    private suspend fun _getNotes() {
+
+
+        when (val response = repository.getAllNotes()) {
+            is Response.Success<List<Note>> -> {
+                notesLiveData.postValue(response.result)
+            }
+
+            else -> {
+                TODO("Not yet implemented")
+            }
+        }
+
     }
 
     private suspend fun _deleteNote(id: String) {
-        TODO("Not yet implemented")
+        val result = repository.deleteNote(id)
+        when (result) {
+            is Response.Success -> {
+                TODO("Not yet implemented")
+            }
+
+            else -> {
+                TODO("Not yet implemented")
+            }
+        }
+
     }
 }

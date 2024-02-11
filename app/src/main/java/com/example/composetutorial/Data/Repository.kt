@@ -1,8 +1,11 @@
 package com.example.composetutorial.Data
 
 import com.example.composetutorial.domain.Note
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository(private val dataSource: DataSourceContract<Note>) {
+@Singleton
+class Repository @Inject constructor(private val dataSource: DataSourceContract) {
 
     suspend fun getAllNotes(): Response<List<Note>> {
         return dataSource.getAllNotes()

@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composetutorial.Data.Repository
+import com.example.composetutorial.Data.Response
 import com.example.composetutorial.domain.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -12,7 +14,10 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class NoteScreenViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
+class NoteScreenViewModel @Inject constructor(
+    val repository: Repository,
+    savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     val noteId: String = savedStateHandle.get<String>(KEY_NOTE_ID)!!
     val noteLiveData = MutableLiveData<Note>()
@@ -24,7 +29,7 @@ class NoteScreenViewModel @Inject constructor(savedStateHandle: SavedStateHandle
 
     fun getNote() {
         viewModelScope.launch(Dispatchers.IO) {
-            noteLiveData.postValue(_getNote(noteId))
+            _getNote(noteId)
         }
     }
 
@@ -40,16 +45,39 @@ class NoteScreenViewModel @Inject constructor(savedStateHandle: SavedStateHandle
         }
     }
 
-    private suspend fun _getNote(id: String): Note {
-        TODO("Not yet implemented")
+    private suspend fun _getNote(id: String) {
+
+        when (val response = repository.getNote(noteId)) {
+            is Response.Success<Note> -> noteLiveData.postValue(response.result)
+            else -> {
+                TODO("Not yet implemented")
+            }
+        }
+
     }
 
     private suspend fun _saveNote(note: Note) {
-        TODO("Not yet implemented")
+        when (val result = repository.editNote(note)) {
+            is Response.Success -> {
+                TODO("Not yet implemented")
+            }
+
+            else -> {
+                TODO("Not yet implemented")
+            }
+        }
     }
 
     private suspend fun _deleteNote(id: String) {
-        TODO("Not yet implemented")
+        when (val result = repository.deleteNote(id)) {
+            is Response.Success -> {
+                TODO("Not yet implemented")
+            }
+
+            else -> {
+                TODO("Not yet implemented")
+            }
+        }
     }
 }
 

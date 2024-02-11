@@ -1,9 +1,11 @@
 package com.example.composetutorial.Data
 
-interface DataSourceContract<T> {
-    suspend fun getAllNotes(): Response<List<T>>
-    suspend fun getNote(id: String): Response<T>
+import com.example.composetutorial.domain.Note
+
+interface DataSourceContract {
+    suspend fun getAllNotes(): Response<List<Note>>
+    suspend fun getNote(id: String): Response<Note>
     suspend fun deleteNote(id: String): Response<Nothing>
-    suspend fun addNote(note: T): Response<Nothing>
-    suspend fun editNote(note: T): Response<Nothing>
+    suspend fun addNote(note: Note): Response<Nothing>
+    suspend fun editNote(note: Note): Response<Nothing>
 }

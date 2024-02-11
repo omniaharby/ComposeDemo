@@ -9,7 +9,7 @@ sealed class Screen(val route: String, val navArgs: List<NamedNavArgument> = emp
     data object Home : Screen(route = "Home")
 
     data object NoteScreen : Screen(
-        route = "NoteScreen",
+        route = "NoteScreen/{NoteId}",
         navArgs = listOf(navArgument("NoteId") {
             type = NavType.StringType
         })
