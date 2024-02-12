@@ -7,5 +7,5 @@ data class Note(
     val title: String = "No Title",
     val description: String = "",
     val date: String,
-    val color: Color = getRandomColour()
+    val color: Color
 )

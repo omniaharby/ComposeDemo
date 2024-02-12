@@ -30,7 +30,7 @@ import com.example.composetutorial.domain.Note
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel()) {
+fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel(), onBackClick: () -> Unit) {
 
     val note by viewModel.noteLiveData.observeAsState()
 
@@ -48,7 +48,7 @@ fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel()) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(it.title, fontSize = 24.sp)
-                IconButton(onClick = { /*TODO*/ }) {
+                IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "go back to main screen "
@@ -91,5 +91,5 @@ fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel()) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNotePage() {
-    NoteScreen()
+    NoteScreen {}
 }

@@ -27,7 +27,7 @@ fun Navigation() {
             route = Screen.NoteScreen.route,
             arguments = Screen.NoteScreen.navArgs
         ) {
-            NoteScreen()
+            NoteScreen(onBackClick = { navController.navigateUp() })
         }
     }
 }

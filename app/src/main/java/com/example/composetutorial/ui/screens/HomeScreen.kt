@@ -21,10 +21,10 @@ fun HomeScreen(onNoteClick: (String) -> Unit, viewModel: HomeScreenViewModel = h
 
     val onQueryChanged: (String) -> Unit = {
         query = it
-        //todo : implement search action
+        viewModel.query.postValue(it)
     }
 
-    val data by viewModel.notesLiveData.observeAsState()
+    val data by viewModel.filteredNotesLiveData.observeAsState()
 
     Column {
         ToolBar(query, onQueryChanged)
