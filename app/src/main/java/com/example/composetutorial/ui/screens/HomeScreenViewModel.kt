@@ -31,7 +31,7 @@ class HomeScreenViewModel @Inject constructor(val repository: Repository) : View
     }
 
     init {
-        updateData()
+        gatAllNotes()
     }
 
     private fun searchNotes(query: String, noteList: List<Note>): List<Note> {
@@ -43,44 +43,34 @@ class HomeScreenViewModel @Inject constructor(val repository: Repository) : View
         }
     }
 
-    private fun updateData() {
+    private fun gatAllNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            _getNotes()
+            when (val response = repository.getAllNotes()) {
+                is Response.Success<List<Note>> -> {
+                    _notesList = response.result
+                    filteredNotesLiveData.postValue(_notesList)
+                }
+
+                else -> {
+                    TODO("Not yet implemented")
+                }
+            }
         }
     }
 
-    fun deleteNote(id: String) {
+    fun deleteNoteFromRepo(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            _deleteNote(id)
+
+            when (repository.deleteNote(id)) {
+                is Response.Success -> {
+                    TODO("Not yet implemented")
+                }
+
+                else -> {
+                    TODO("Not yet implemented")
+                }
+            }
         }
     }
 
-    private suspend fun _getNotes() {
-
-        when (val response = repository.getAllNotes()) {
-            is Response.Success<List<Note>> -> {
-                _notesList = response.result
-                filteredNotesLiveData.postValue(_notesList)
-            }
-
-            else -> {
-                TODO("Not yet implemented")
-            }
-        }
-
-    }
-
-    private suspend fun _deleteNote(id: String) {
-        val result = repository.deleteNote(id)
-        when (result) {
-            is Response.Success -> {
-                TODO("Not yet implemented")
-            }
-
-            else -> {
-                TODO("Not yet implemented")
-            }
-        }
-
-    }
 }
