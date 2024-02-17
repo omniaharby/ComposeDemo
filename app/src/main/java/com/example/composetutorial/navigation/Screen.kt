@@ -12,8 +12,9 @@ sealed class Screen(val route: String, val navArgs: List<NamedNavArgument> = emp
         route = "NoteScreen/{NoteId}",
         navArgs = listOf(navArgument("NoteId") {
             type = NavType.StringType
+            nullable = true
         })
     ) {
-        fun createRoute(noteId: String) = "NoteScreen/${noteId}"
+        fun createRoute(noteId: String?) = "NoteScreen/${noteId}"
     }
 }

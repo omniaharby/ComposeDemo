@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.composetutorial.dataSource.getData
+import com.example.composetutorial.datasource.getData
 import com.example.composetutorial.domain.Note
 
 @Composable

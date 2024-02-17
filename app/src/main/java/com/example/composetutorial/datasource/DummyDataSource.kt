@@ -1,7 +1,7 @@
-package com.example.composetutorial.dataSource
+package com.example.composetutorial.datasource
 
 
-import com.example.composetutorial.Data.Response
+import com.example.composetutorial.data.Response
 import com.example.composetutorial.domain.Note
 
 class DummyDataSource {

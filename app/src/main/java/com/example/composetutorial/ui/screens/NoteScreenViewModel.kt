@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composetutorial.Data.Repository
-import com.example.composetutorial.Data.Response
+import com.example.composetutorial.data.Repository
+import com.example.composetutorial.data.Response
 import com.example.composetutorial.domain.Note
-import com.example.composetutorial.domain.getRandomColour
+import com.example.composetutorial.domain.NoteColor.Companion.getRandomNoteColor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +25,7 @@ class NoteScreenViewModel @Inject constructor(
     private lateinit var _note: Note
     val isEditModeEnabled = MutableLiveData(false)
     private val _noteLiveData = MutableLiveData<Note>()
+
     val noteLiveData: LiveData<Note>
         get() = _noteLiveData
 
@@ -39,9 +40,9 @@ class NoteScreenViewModel @Inject constructor(
 
     private fun createNewNote() {
         _note = Note(
-            id = "", date = getDate(), color = getRandomColour()
+            id = "0", date = getDate(), color = getRandomNoteColor().color
         )
-        saveNoteToRepository(_note)
+        _noteLiveData.postValue(_note)
     }
 
     fun updateNoteTitle(title: String) {
@@ -60,7 +61,9 @@ class NoteScreenViewModel @Inject constructor(
         if (isEditModeEnabled.value == true) {
             noteLiveData.value?.also {
                 if (it.title != _note.title || it.description != _note.description) {
-                    updateNoteInRepository(it)
+                    if (_noteId == null)
+                        saveNoteToRepository(it)
+                    else updateNoteInRepository(it)
                 }
             }
         }

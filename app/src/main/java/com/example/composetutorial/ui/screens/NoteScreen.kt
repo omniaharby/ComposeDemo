@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel(), onBackClick: () -> Unit) {
 
@@ -92,15 +91,18 @@ fun NoteScreen(viewModel: NoteScreenViewModel = hiltViewModel(), onBackClick: ()
                 fontWeight = FontWeight.Light,
                 modifier = Modifier.padding(16.dp)
             )
+            val containerColor = Color(0xFA, 0xF8, 0xF8, 0x4F)
             TextField(
                 value = _note.description,
                 enabled = enableEdit ?: false,
                 onValueChange = { viewModel.updateNoteDescription(it) },
-                colors = TextFieldDefaults.textFieldColors(
+                colors = TextFieldDefaults.colors(
                     unfocusedTextColor = Color.DarkGray,
                     disabledTextColor = Color.Black,
+                    focusedContainerColor = containerColor,
+                    unfocusedContainerColor = containerColor,
+                    disabledContainerColor = containerColor,
                     cursorColor = Color.Black,
-                    containerColor = Color(0xFA, 0xF8, 0xF8, 0x4F),
                     focusedIndicatorColor = Color.Black,
                     unfocusedIndicatorColor = Color.Black,
                     disabledIndicatorColor = Color.Transparent,

@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchView(query: String, onQueryChange: (String) -> Unit) {
@@ -33,7 +34,7 @@ fun SearchView(query: String, onQueryChange: (String) -> Unit) {
     AnimatedVisibility(
         visible = isActive,
     ) {
-        TextField(
+       TextField(
             value = query,
             onValueChange = {
                 onQueryChange(it)
@@ -49,10 +50,13 @@ fun SearchView(query: String, onQueryChange: (String) -> Unit) {
                     )
                 }
             },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
                 cursorColor = Color.Black,
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
             ),
             modifier = Modifier
                 .fillMaxWidth()

@@ -4,12 +4,13 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.composetutorial.Data.Repository
-import com.example.composetutorial.Data.Response
+import com.example.composetutorial.data.Repository
+import com.example.composetutorial.data.Response
 import com.example.composetutorial.domain.Note
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Locale
 import javax.inject.Inject
 
 
@@ -19,7 +20,7 @@ class HomeScreenViewModel @Inject constructor(val repository: Repository) : View
 
     private var _notesList: List<Note> = listOf()
     val query = MutableLiveData("")
-    val filteredNotesLiveData = MediatorLiveData<List<Note>>().apply {
+    val filteredNotesLiveData = MediatorLiveData<List<Note>>(listOf()).apply {
         addSource(query) { _query ->
 
             if (!query.value.isNullOrBlank()) {
@@ -30,20 +31,18 @@ class HomeScreenViewModel @Inject constructor(val repository: Repository) : View
         }
     }
 
-    init {
-        gatAllNotes()
-    }
-
-    private fun searchNotes(query: String, noteList: List<Note>): List<Note> {
-        return query.toLowerCase().let { updatedQuery ->
-            noteList.filter {
-                it.title.toLowerCase().contains(updatedQuery) || it.description.toLowerCase()
-                    .contains(updatedQuery)
-            }
+    val isEmptyState = MediatorLiveData<Boolean>().apply {
+        addSource(filteredNotesLiveData) {
+            value = it.isEmpty()
         }
     }
 
-    private fun gatAllNotes() {
+    init {
+        getAllNotes()
+    }
+
+
+    fun getAllNotes() {
         viewModelScope.launch(Dispatchers.IO) {
             when (val response = repository.getAllNotes()) {
                 is Response.Success<List<Note>> -> {
@@ -54,6 +53,16 @@ class HomeScreenViewModel @Inject constructor(val repository: Repository) : View
                 else -> {
                     TODO("Not yet implemented")
                 }
+            }
+        }
+    }
+
+    private fun searchNotes(query: String, noteList: List<Note>): List<Note> {
+        return query.lowercase(Locale.getDefault()).let { updatedQuery ->
+            noteList.filter {
+                it.title.lowercase(Locale.getDefault())
+                    .contains(updatedQuery) || it.description.lowercase(Locale.getDefault())
+                    .contains(updatedQuery)
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.example.composetutorial.Data
+package com.example.composetutorial.data
 
 import com.example.composetutorial.domain.Note
 import javax.inject.Inject
@@ -15,15 +15,15 @@ class Repository @Inject constructor(private val dataSource: DataSourceContract)
         return dataSource.getNote(id)
     }
 
-    suspend fun deleteNote(id: String): Response<Nothing> {
+    suspend fun deleteNote(id: String): Response<String> {
         return dataSource.deleteNote(id)
     }
 
-    suspend fun addNote(note: Note): Response<Nothing> {
+    suspend fun addNote(note: Note): Response<String> {
         return dataSource.addNote(note)
     }
 
-    suspend fun editNote(note: Note): Response<Nothing> {
+    suspend fun editNote(note: Note): Response<String> {
         return dataSource.editNote(note)
     }
 }

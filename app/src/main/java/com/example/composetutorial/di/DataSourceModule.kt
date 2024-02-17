@@ -1,7 +1,7 @@
 package com.example.composetutorial.di
 
-import com.example.composetutorial.Data.DataSourceAdapter
-import com.example.composetutorial.Data.DataSourceContract
+import com.example.composetutorial.data.DataSourceAdapter
+import com.example.composetutorial.data.DataSourceContract
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
